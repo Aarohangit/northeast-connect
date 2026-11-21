@@ -1,10 +1,11 @@
 import 'leaflet/dist/leaflet.css'
 import L from 'leaflet'
-import { useMemo } from 'react'
+import { useMemo, useState } from 'react'
 import { MapContainer, Marker, Popup, TileLayer, CircleMarker } from 'react-leaflet'
 import { Card, PageTitle, SampleTag } from '../components/Layout.jsx'
 import { Icon } from '../components/icons.jsx'
-import { SHELTERS } from '../data/reference.js'
+import { NE_CENTER, SHELTERS, stateOf } from '../data/reference.js'
+import { useHomeState } from '../lib/region.js'
 import { useLang } from '../i18n/index.jsx'
 import { distanceKm, lastKnownPosition } from '../lib/geo.js'
 import { useSync } from '../lib/sync.jsx'
@@ -17,17 +18,23 @@ const shelterIcon = L.divIcon({
   iconAnchor: [9, 9],
 })
 
-const ASSAM_CENTER = [26.4, 92.8]
 
 export default function Shelters() {
   const { t } = useLang()
   const { network } = useSync()
   const here = useMemo(() => lastKnownPosition(), [])
+  const [homeState] = useHomeState()
+  const [allStates, setAllStates] = useState(false)
+  const home = stateOf(homeState)
 
   const list = useMemo(() => {
-    const withDist = SHELTERS.map((s) => ({ ...s, km: here ? distanceKm(here, s) : null }))
+    const pool = allStates ? SHELTERS : SHELTERS.filter((s) => s.state === homeState)
+    const withDist = pool.map((s) => ({ ...s, km: here ? distanceKm(here, s) : null }))
     return here ? withDist.sort((a, b) => a.km - b.km) : withDist
-  }, [here])
+  }, [here, homeState, allStates])
+
+  const center = here ? [here.latitude, here.longitude] : allStates ? NE_CENTER : home.center
+  const zoom = here ? 9 : allStates ? 6 : 8
 
   return (
     <div className="space-y-4">
@@ -39,7 +46,7 @@ export default function Shelters() {
         <Card className="p-3 text-sm text-ink-soft">{t('mapOffline')}</Card>
       ) : (
         <Card className="overflow-hidden">
-          <MapContainer center={here ? [here.latitude, here.longitude] : ASSAM_CENTER} zoom={here ? 10 : 7} className="h-64 w-full" scrollWheelZoom={false}>
+          <MapContainer key={`${allStates}-${homeState}`} center={center} zoom={zoom} className="h-64 w-full" scrollWheelZoom={false}>
             <TileLayer attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>' url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png" />
             {here && <CircleMarker center={[here.latitude, here.longitude]} radius={8} pathOptions={{ color: '#c8102e', fillOpacity: 0.9 }} />}
             {list.map((s) => (
@@ -55,7 +62,12 @@ export default function Shelters() {
         </Card>
       )}
 
-      {here && <p className="text-xs text-ink-soft">{t('sortedByDistance')}</p>}
+      <div className="flex items-center justify-between gap-2">
+        <p className="text-xs text-ink-soft">{allStates ? t('allStates') : home.name}{here ? ` · ${t('sortedByDistance')}` : ''}</p>
+        <button type="button" onClick={() => setAllStates((v) => !v)} className="shrink-0 rounded border border-line bg-white px-2 py-1 text-xs font-semibold">
+          {allStates ? t('showMyState') : t('showAllStates')}
+        </button>
+      </div>
 
       <Card className="divide-y divide-line">
         {list.map((s) => (

@@ -39,8 +39,8 @@ export default function TopBar() {
         <div className="flex items-center gap-2.5">
           <img src="/icon.svg" alt="" className="h-6 w-6" />
           <div className="leading-tight">
-            <div className="text-[13px] font-bold tracking-tight">Flood Control Room</div>
-            <div className="text-[10px] uppercase tracking-[0.14em] text-white/50">Assam · {user.district ?? 'All districts'}</div>
+            <div className="text-[13px] font-bold tracking-tight">Northeast Connect · Control Room</div>
+            <div className="text-[10px] uppercase tracking-[0.14em] text-white/50">North East India · {user.district ?? 'All states'}</div>
           </div>
         </div>
         <nav className="flex gap-1">

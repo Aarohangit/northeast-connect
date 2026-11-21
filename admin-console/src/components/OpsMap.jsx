@@ -5,7 +5,8 @@ import { Circle, CircleMarker, MapContainer, Marker, TileLayer, Tooltip, useMap 
 import { CATEGORY_LABEL, isOpen, severityMeta, STATUS_LABEL } from '../lib/format.js'
 import { SeverityKey } from './Badges.jsx'
 
-const ASSAM_BOUNDS = [[24.1, 89.7], [28.2, 96.1]]
+// The eight North East states.
+const NE_BOUNDS = [[21.9, 88.0], [29.5, 97.4]]
 
 const TEAM_COLOR = { AVAILABLE: '#1d6b3a', DEPLOYED: '#d35c00', OFF_DUTY: '#8b939d' }
 
@@ -44,7 +45,7 @@ export default function OpsMap({ sos, teams, hotspots, selected, onSelect, layer
 
   return (
     <section className="relative min-w-0 flex-1">
-      <MapContainer bounds={ASSAM_BOUNDS} className="h-full w-full" zoomControl preferCanvas={false}>
+      <MapContainer bounds={NE_BOUNDS} className="h-full w-full" zoomControl preferCanvas={false}>
         <TileLayer
           attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>'
           url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"

@@ -1,7 +1,8 @@
 import { Link } from 'react-router'
 import { Card, NetworkBadge, SampleTag } from '../components/Layout.jsx'
 import { Icon } from '../components/icons.jsx'
-import { ALERT, HELPLINES } from '../data/reference.js'
+import { ALERT, HELPLINES, STATES } from '../data/reference.js'
+import { useHomeState } from '../lib/region.js'
 import { useLang } from '../i18n/index.jsx'
 import { useSync } from '../lib/sync.jsx'
 import { DeliveryChip } from './RequestStatus.jsx'
@@ -9,6 +10,7 @@ import { DeliveryChip } from './RequestStatus.jsx'
 export default function Home() {
   const { t, lang } = useLang()
   const { records } = useSync()
+  const [homeState, setHomeState] = useHomeState()
 
   return (
     <div className="space-y-5">
@@ -22,7 +24,14 @@ export default function Home() {
       </Card>
 
       <section className="flex flex-col items-center pt-2 text-center">
-        <div className="mb-4 self-end">
+        <div className="mb-4 flex w-full items-center justify-between gap-2">
+          <label className="flex items-center gap-1.5 text-xs text-ink-soft">
+            <Icon.Pin width={14} height={14} />
+            <select value={homeState} onChange={(e) => setHomeState(e.target.value)} aria-label={t('yourState')}
+              className="rounded border border-line bg-white px-1.5 py-1 text-xs font-semibold text-ink">
+              {STATES.map((s) => <option key={s.code} value={s.code}>{s.name}</option>)}
+            </select>
+          </label>
           <NetworkBadge />
         </div>
         <Link

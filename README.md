@@ -54,7 +54,7 @@ cd services/api-gateway    && ./mvnw spring-boot:run
 # AI service
 cd services/ai-service
 python -m venv .venv && .venv/Scripts/pip install -r requirements.txt
-.venv/Scripts/python -m uvicorn app.main:app --port 8083
+.venv/Scripts/python -m uvicorn app.main:app --port 8083 --http h11
 ```
 
 On networks that intercept HTTPS, set

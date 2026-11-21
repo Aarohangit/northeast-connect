@@ -20,9 +20,9 @@ export default defineConfig({
         globPatterns: ['**/*.{js,css,html,svg,png,woff2}'],
       },
       manifest: {
-        name: 'Flood Response Assam',
-        short_name: 'Flood SOS',
-        description: 'Request flood rescue, even on a weak network.',
+        name: 'Northeast Connect',
+        short_name: 'NE Connect',
+        description: 'Emergency help and safety information for North East India, even on a weak network.',
         lang: 'en',
         start_url: '/',
         display: 'standalone',

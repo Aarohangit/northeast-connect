@@ -18,6 +18,8 @@ export const STATUS_LABEL = {
 
 export const CATEGORY_LABEL = {
   TRAPPED_IN_WATER: 'Trapped in water',
+  LANDSLIDE: 'Landslide',
+  EARTHQUAKE: 'Earthquake',
   MEDICAL: 'Medical',
   FOOD_AND_WATER: 'Food / water',
   VULNERABLE_PERSON: 'Vulnerable person',

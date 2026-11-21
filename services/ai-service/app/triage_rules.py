@@ -18,7 +18,10 @@ WORDS = {
                "बढ़ रहा", "बढ़ रही", "बढ़", "বাঢ়িছে", "সোমাইছে", "বাড়ছে", "ঢুকছে"],
     "swept": ["swept", "drowning", "washed away", "flowing away", "beh gaya", "doob", "बह गया", "डूब",
               "উটুৱাই", "ডুবি", "ভেসে"],
-    "chest": ["chest", "heart", "seene", "सीने", "दिल", "বুকুত", "বুকে", "হৃদ"],
+    # "chest" alone is not enough: "water at chest level" is a water depth, not a symptom.
+    "chest": ["chest pain", "pain in chest", "pain in his chest", "pain in her chest", "chest ache", "heart attack",
+              "heart problem", "seene mein dard", "सीने में दर्द", "छाती में दर्द", "दिल का दौरा", "বুকুত বিষ",
+              "বুকত বিষ", "বুকে ব্যথা", "হৃদ"],
     "breath": ["breath", "breathing", "saans", "सांस", "साँस", "উশাহ", "শ্বাস"],
     "unconscious": ["unconscious", "fainted", "not responding", "behosh", "बेहोश", "অজ্ঞান"],
     "bleeding": ["bleeding", "blood", "khoon", "खून", "তেজ", "রক্ত"],
@@ -29,7 +32,7 @@ WORDS = {
     "infant": ["infant", "newborn", "baby", "shishu", "नवजात", "কেঁচুৱা", "শিশু"],
     "children": ["child", "children", "kids", "bachche", "bacche", "baccha", "bachcha", "bachha", "bache",
                  "बच्चे", "बच्चा", "ল'ৰা-ছোৱালী", "লৰা-ছোৱালী", "সন্তান", "বাচ্চা"],
-    "elderly": ["elderly", "old man", "old woman", "grandmother", "grandfather", "grandma", "grandpa", "aged",
+    "elderly": ["elderly", "old man", "old woman", "old people", "old person", "old couple", "grandmother", "grandfather", "grandma", "grandpa", "aged",
                 "buzurg", "bujurg", "dadi", "dada", "nani", "nana", "aita", "koka", "बुजुर्ग", "दादी", "दादा",
                 "नानी", "नाना", "বুঢ়া", "আইতা", "ককা", "বৃদ্ধ"],
     "disabled": ["disabled", "wheelchair", "bedridden", "paralysed", "paralyzed", "विकलांग", "বিকলাং", "শয্যাশায়ী"],
@@ -41,6 +44,24 @@ WORDS = {
                  "খোৱাপানী", "খাবার পানি"],
     "shelter": ["shelter", "nowhere to go", "house collapsed", "ghar gir", "घर गिर", "আশ্ৰয়", "আশ্রয়"],
     "collapse": ["collapse", "collapsing", "embankment", "breach", "dyke", "गिर रहा", "বান্ধ", "ভাঙি"],
+    "landslide": ["landslide", "land slide", "mudslide", "mud slide", "mud is sliding", "mud sliding", "sliding",
+                  "hill collapsed", "slope", "bhooskhalan",
+                  "bhuskhalan", "भूस्खलन", "पहाड़ धंस", "पहाड़ गिर", "ভূমিস্খলন", "ভূমিস্খলন", "মাটি খহি", "পাহাৰ খহি",
+                  "ধস", "ধ্বস", "পাহাড় ধসে"],
+    "earthquake": ["earthquake", "quake", "tremor", "bhukamp", "bhookamp", "भूकंप", "भूकम्प", "ভূমিকম্প", "ভূমিকম্প"],
+    "buried": ["buried", "under debris", "under the debris", "trapped under", "under rubble", "rubble", "debris",
+               "मलबे", "मलबा", "दबे", "दब गए", "দবি", "তলত পৰি", "চাপা পড়", "ধ্বংসস্তূপ"],
+    "building_down": ["house collapsed", "building collapsed", "wall collapsed", "roof collapsed", "house fell",
+                      "मकान गिर", "घर गिर", "दीवार गिर", "ঘৰ ভাঙি", "ঘৰ খহি", "বাড়ি ভেঙে", "দেওয়াল ভেঙে"],
+    "cracks": ["crack", "cracks", "cracking", "दरार", "ফাট", "ফাটল"],
+    "safe": ["all safe", "everyone safe", "everyone is safe", "we are safe", "safe for now", "सब सुरक्षित",
+             "सुरक्षित हैं", "সকলো সুৰক্ষিত", "সুৰক্ষিত আছো", "সবাই নিরাপদ", "নিরাপদ আছি"],
+    "water_words": ["water", "flood", "pani", "paani", "पानी", "बाढ़", "পানী", "বান", "পানি", "বন্যা", "জল"],
+    "evacuate": ["evacuate", "evacuation", "want to get out", "need to get out", "निकलना है", "निकालो",
+                 "ওলাই যাব লাগে", "বের হতে"],
+    "road_blocked": ["road blocked", "road is blocked", "road cut off", "road washed", "cut off", "no road",
+                     "highway cut", "cut the highway", "highway blocked", "highway near", "cut the",
+                     "रास्ता बंद", "सड़क बंद", "সড়ক বন্ধ", "ৰাস্তা বন্ধ", "বাট বন্ধ", "রাস্তা বন্ধ"],
 }
 
 # Being on the roof is not the same as water at roof level, so ROOF needs explicit wording.
@@ -56,15 +77,27 @@ NUMBER_WORDS = {"one": 1, "two": 2, "three": 3, "four": 4, "five": 5, "six": 6, 
                 "nine": 9, "ten": 10}
 
 
+def _match(text: str, word: str) -> bool:
+    # Latin-script keywords must start a word ("aged" must not match "damaged"); they may still be
+    # stems ("trap" matches "trapped"). Indic-script keywords are matched anywhere, since words
+    # there are often joined with suffixes and particles.
+    if word.isascii():
+        return re.search(r"(?<![a-z])" + re.escape(word), text) is not None
+    return word in text
+
+
 def _has(text: str, key: str) -> bool:
-    return any(w in text for w in WORDS[key])
+    return any(_match(text, w) for w in WORDS[key])
 
 
 def _people(text: str) -> int:
     m = re.search(r"(\d{1,3})\s*(people|persons|members|log|jan|জন|জনী|लोग|জন মানুহ)", text)
     if m:
         return int(m.group(1))
-    m = re.search(r"\b(" + "|".join(NUMBER_WORDS) + r")\s+(people|persons|members)", text)
+    m = re.search(r"(\d{1,3})\s+of\s+us", text)
+    if m:
+        return int(m.group(1))
+    m = re.search(r"\b(" + "|".join(NUMBER_WORDS) + r")\s+(people|persons|members|of us)", text)
     return NUMBER_WORDS[m.group(1)] if m else 0
 
 
@@ -105,15 +138,22 @@ def triage(req: TriageRequest) -> TriageResult:
         or _has(t, "bleeding") or _has(t, "snake") or _has(t, "labour") or _has(t, "electric")
         or _has(t, "collapse") or (water in (WaterLevel.CHEST, WaterLevel.ROOF) and rising)
         or (_has(t, "roof") and rising)
+        or _has(t, "buried") or _has(t, "building_down")
     )
     urgent = (
         _has(t, "trapped") or _has(t, "roof") or water in (WaterLevel.WAIST, WaterLevel.CHEST, WaterLevel.ROOF)
         or _has(t, "injury") or _has(t, "medicine") or bool(vulnerable)
-    )
-    supplies = _has(t, "food") or _has(t, "drinking") or _has(t, "shelter")
+        or (_has(t, "cracks") and (_has(t, "landslide") or _has(t, "earthquake")))
+        or _has(t, "evacuate")
+    ) and not _has(t, "safe")
+    supplies = _has(t, "food") or _has(t, "drinking") or _has(t, "shelter") or _has(t, "road_blocked")
 
     if life_threat:
         severity, reason = Severity.CRITICAL, "Report mentions an immediate threat to life"
+    elif (_has(t, "landslide") or _has(t, "earthquake")) and not _has(t, "safe"):
+        severity, reason = Severity.HIGH, "Landslide or earthquake affecting people"
+    elif _has(t, "safe") and (supplies or _has(t, "landslide") or _has(t, "earthquake")):
+        severity, reason = Severity.MEDIUM, "Cut off or short of supplies, but reported safe"
     elif urgent:
         severity, reason = Severity.HIGH, "People stranded, injured or vulnerable"
     elif supplies:
@@ -122,8 +162,15 @@ def triage(req: TriageRequest) -> TriageResult:
         severity, reason = Severity.LOW, "No specific need identified"
 
     needs: list[Need] = []
-    if _has(t, "trapped") or _has(t, "roof") or _has(t, "swept") or water != WaterLevel.NOT_MENTIONED:
+    debris = _has(t, "buried") or _has(t, "building_down")
+    if debris:
+        needs.append(Need.DEBRIS_RESCUE)
+    # Being cut off by a landslide is not a job for a boat; only suggest one when water is involved.
+    watery = _has(t, "water_words") or _has(t, "swept") or water != WaterLevel.NOT_MENTIONED
+    if not debris and watery and (_has(t, "trapped") or _has(t, "roof") or _has(t, "swept") or water != WaterLevel.NOT_MENTIONED):
         needs.append(Need.BOAT_RESCUE)
+    if _has(t, "road_blocked"):
+        needs.append(Need.ROAD_CLEARANCE)
     if any(m in medical for m in ("chest pain", "breathing difficulty", "unconscious", "snake bite", "in labour")):
         needs.append(Need.MEDICAL_EVACUATION)
     if any(m in medical for m in ("bleeding", "injury")):
@@ -141,7 +188,11 @@ def triage(req: TriageRequest) -> TriageResult:
     if _has(t, "electric"):
         needs.append(Need.ELECTRICAL_HAZARD)
 
-    if Need.BOAT_RESCUE in needs:
+    if _has(t, "landslide"):
+        category = Category.LANDSLIDE
+    elif _has(t, "earthquake"):
+        category = Category.EARTHQUAKE
+    elif Need.BOAT_RESCUE in needs:
         category = Category.TRAPPED_IN_WATER
     elif medical:
         category = Category.MEDICAL
@@ -159,8 +210,18 @@ def triage(req: TriageRequest) -> TriageResult:
     bits = []
     if people:
         bits.append(f"{people} people")
+    if _has(t, "landslide"):
+        bits.append("landslide")
+    if _has(t, "earthquake"):
+        bits.append("earthquake")
+    if debris:
+        bits.append("people under debris" if _has(t, "buried") else "building collapsed")
     if _has(t, "roof"):
         bits.append("on roof")
+    if _has(t, "road_blocked"):
+        bits.append("road blocked")
+    if _has(t, "cracks"):
+        bits.append("cracks appearing")
     if water != WaterLevel.NOT_MENTIONED:
         bits.append(f"water at {water.value.lower()} level" + (", rising" if rising else ""))
     elif rising:

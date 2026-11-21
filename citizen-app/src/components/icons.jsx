@@ -21,12 +21,16 @@ export const Icon = {
   Help: (p) => <svg {...base} {...p}><circle cx="12" cy="12" r="9" /><path d="M9.5 9a2.5 2.5 0 015 .5c0 1.5-2.5 2-2.5 3.5M12 17v.5" /></svg>,
   Message: (p) => <svg {...base} {...p}><path d="M4 5h16v11H8l-4 4V5z" /></svg>,
   Refresh: (p) => <svg {...base} {...p}><path d="M20 11a8 8 0 10-2.3 5.7M20 4v7h-7" /></svg>,
+  Landslide: (p) => <svg {...base} {...p}><path d="M3 20l6-11 4 6 2-3 6 8H3z" /><circle cx="16" cy="16.5" r="1" /><circle cx="13" cy="18" r=".8" /></svg>,
+  Quake: (p) => <svg {...base} {...p}><path d="M2 12h3l2-5 3 10 3-8 2 5 2-2h5" /></svg>,
   Minus: (p) => <svg {...base} {...p}><path d="M5 12h14" /></svg>,
   Plus: (p) => <svg {...base} {...p}><path d="M12 5v14M5 12h14" /></svg>,
 }
 
 export const CATEGORY_ICON = {
   TRAPPED_IN_WATER: Icon.Water,
+  LANDSLIDE: Icon.Landslide,
+  EARTHQUAKE: Icon.Quake,
   MEDICAL: Icon.Medical,
   FOOD_AND_WATER: Icon.Food,
   VULNERABLE_PERSON: Icon.Person,

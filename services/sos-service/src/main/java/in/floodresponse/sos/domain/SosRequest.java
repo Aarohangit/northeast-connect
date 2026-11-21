@@ -1,6 +1,8 @@
 package in.floodresponse.sos.domain;
 
 import jakarta.persistence.*;
+import org.hibernate.annotations.JdbcTypeCode;
+import org.hibernate.type.SqlTypes;
 
 import java.time.Instant;
 
@@ -32,6 +34,7 @@ public class SosRequest {
     private String phone;
 
     @Enumerated(EnumType.STRING)
+    @JdbcTypeCode(SqlTypes.VARCHAR) // plain text, so new values need no schema change
     @Column(nullable = false, length = 24)
     private EmergencyCategory category;
 
@@ -55,10 +58,12 @@ public class SosRequest {
     private String language;
 
     @Enumerated(EnumType.STRING)
+    @JdbcTypeCode(SqlTypes.VARCHAR) // plain text, so new values need no schema change
     @Column(nullable = false, length = 16)
     private DeliveryChannel channel;
 
     @Enumerated(EnumType.STRING)
+    @JdbcTypeCode(SqlTypes.VARCHAR) // plain text, so new values need no schema change
     @Column(nullable = false, length = 16)
     private RescueStatus status = RescueStatus.RECEIVED;
 

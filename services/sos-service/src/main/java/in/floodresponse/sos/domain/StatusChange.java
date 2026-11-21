@@ -1,6 +1,8 @@
 package in.floodresponse.sos.domain;
 
 import jakarta.persistence.*;
+import org.hibernate.annotations.JdbcTypeCode;
+import org.hibernate.type.SqlTypes;
 
 import java.time.Instant;
 
@@ -18,10 +20,12 @@ public class StatusChange {
     private SosRequest sos;
 
     @Enumerated(EnumType.STRING)
+    @JdbcTypeCode(SqlTypes.VARCHAR) // plain text, so new values need no schema change
     @Column(length = 16)
     private RescueStatus fromStatus;
 
     @Enumerated(EnumType.STRING)
+    @JdbcTypeCode(SqlTypes.VARCHAR) // plain text, so new values need no schema change
     @Column(nullable = false, length = 16)
     private RescueStatus toStatus;
 

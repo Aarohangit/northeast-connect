@@ -65,7 +65,7 @@ function Get-Mvnw([string]$dir) { '/s /c ""' + (Join-Path $root "$dir\mvnw.cmd")
 # Order matters a little: the gateway and rescue-service call the others.
 $stack = @(
     @{ Name = 'sos-service';    Port = 8081; Dir = 'services\sos-service';    Exe = 'cmd.exe'; Args = (Get-Mvnw 'services\sos-service');                        Health = 'http://127.0.0.1:8081/actuator/health' },
-    @{ Name = 'ai-service';     Port = 8083; Dir = 'services\ai-service';     Exe = $venvPython; Args = '-m uvicorn app.main:app --port 8083';                Health = 'http://127.0.0.1:8083/actuator/health' },
+    @{ Name = 'ai-service';     Port = 8083; Dir = 'services\ai-service';     Exe = $venvPython; Args = '-m uvicorn app.main:app --port 8083 --http h11';                Health = 'http://127.0.0.1:8083/actuator/health' },
     @{ Name = 'rescue-service'; Port = 8082; Dir = 'services\rescue-service'; Exe = 'cmd.exe'; Args = (Get-Mvnw 'services\rescue-service');                        Health = 'http://127.0.0.1:8082/actuator/health' },
     @{ Name = 'api-gateway';    Port = 8090; Dir = 'services\api-gateway';    Exe = 'cmd.exe'; Args = (Get-Mvnw 'services\api-gateway');                        Health = 'http://127.0.0.1:8090/actuator/health' },
     @{ Name = 'citizen-app';    Port = 5173; Dir = 'citizen-app';             Exe = 'cmd.exe'; Args = '/c npx vite preview --port 5173 --strictPort';          Health = 'http://localhost:5173/' },

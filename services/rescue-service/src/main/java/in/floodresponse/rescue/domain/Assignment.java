@@ -1,6 +1,8 @@
 package in.floodresponse.rescue.domain;
 
 import jakarta.persistence.*;
+import org.hibernate.annotations.JdbcTypeCode;
+import org.hibernate.type.SqlTypes;
 
 import java.time.Instant;
 
@@ -27,6 +29,7 @@ public class Assignment {
     private RescueTeam team;
 
     @Enumerated(EnumType.STRING)
+    @JdbcTypeCode(SqlTypes.VARCHAR) // plain text, so new values need no schema change
     @Column(nullable = false, length = 16)
     private AssignmentStatus status = AssignmentStatus.ASSIGNED;
 

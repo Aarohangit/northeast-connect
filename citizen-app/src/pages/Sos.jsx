@@ -2,13 +2,14 @@ import { useEffect, useRef, useState } from 'react'
 import { useNavigate } from 'react-router'
 import { Card, PageTitle } from '../components/Layout.jsx'
 import { CATEGORY_ICON, Icon } from '../components/icons.jsx'
-import { DISTRICTS } from '../data/reference.js'
+import { STATES } from '../data/reference.js'
 import { SPEECH_LOCALE, useLang } from '../i18n/index.jsx'
 import { getPosition } from '../lib/geo.js'
 import { enqueue } from '../lib/outbox.js'
 import { useSync } from '../lib/sync.jsx'
+import { useHomeState } from '../lib/region.js'
 
-const CATEGORIES = ['TRAPPED_IN_WATER', 'MEDICAL', 'FOOD_AND_WATER', 'VULNERABLE_PERSON', 'CHILDREN', 'OTHER']
+const CATEGORIES = ['TRAPPED_IN_WATER', 'LANDSLIDE', 'EARTHQUAKE', 'MEDICAL', 'FOOD_AND_WATER', 'VULNERABLE_PERSON', 'CHILDREN', 'OTHER']
 const PROFILE = 'sosProfile'
 
 function loadProfile() {
@@ -91,6 +92,9 @@ export default function Sos() {
   const { t, lang } = useLang()
   const navigate = useNavigate()
   const { flush } = useSync()
+  const [homeState] = useHomeState()
+  // Their own state's districts first, then the rest of the North East.
+  const groups = [...STATES].sort((a, b) => (a.code === homeState ? -1 : b.code === homeState ? 1 : a.name.localeCompare(b.name)))
   const profile = loadProfile()
 
   const [loc, setLoc] = useState({ status: 'locating' })
@@ -215,7 +219,11 @@ export default function Sos() {
         <label htmlFor="district" className="mb-1 block font-semibold">{t('district')}</label>
         <select id="district" className={fieldClass} value={district} onChange={(e) => setDistrict(e.target.value)}>
           <option value="">{t('districtUnknown')}</option>
-          {DISTRICTS.map((d) => <option key={d} value={d}>{d}</option>)}
+          {groups.map((st) => (
+            <optgroup key={st.code} label={st.name}>
+              {st.districts.map((d) => <option key={d} value={d}>{d}</option>)}
+            </optgroup>
+          ))}
         </select>
       </div>
 
