@@ -12,8 +12,8 @@ function Tile({ to, icon, title, sub, tone }) {
   const Glyph = Icon[icon]
   return (
     <Link to={to}>
-      <Card className="h-full p-3">
-        <span className={`mb-2 inline-flex rounded-md p-1.5 ${tone}`}><Glyph width={18} height={18} /></span>
+      <Card className="h-full p-3 transition active:scale-[0.98]">
+        <span className={`mb-2.5 inline-flex rounded-xl p-2.5 ${tone}`}><Glyph width={22} height={22} /></span>
         <div className="text-sm font-semibold leading-tight">{title}</div>
         <div className="mt-0.5 text-[11px] leading-snug text-ink-soft">{sub}</div>
       </Card>
@@ -44,7 +44,12 @@ export default function Home() {
         <p className="text-sm text-ink">{ALERT.text[lang]}</p>
       </Card>
 
-      <section className="overflow-hidden rounded-lg bg-ink text-white">
+      <section className="relative overflow-hidden rounded-2xl bg-[radial-gradient(120%_90%_at_50%_0%,#1d4f78_0%,#0f2237_60%,#0b1a2b_100%)] text-white shadow-[0_10px_30px_rgb(15_34_55/0.3)]">
+        <svg aria-hidden="true" className="pointer-events-none absolute inset-x-0 bottom-0 h-24 w-full" viewBox="0 0 400 96" preserveAspectRatio="none">
+          <path d="M0 60 L60 30 L110 55 L170 18 L230 52 L290 26 L340 50 L400 34 V96 H0Z" fill="#ffffff" fillOpacity="0.05" />
+          <path d="M0 74 C40 64 80 84 120 74 S200 64 240 74 320 84 360 74 400 70 400 70 V96 H0Z" fill="#5aa9e6" fillOpacity="0.16" />
+          <path d="M0 84 C40 76 80 92 120 84 S200 76 240 84 320 92 360 84 400 82 400 82 V96 H0Z" fill="#5aa9e6" fillOpacity="0.22" />
+        </svg>
         <div className="flex items-center justify-between gap-2 px-4 pt-3">
           <label className="flex items-center gap-1.5 text-xs text-white/70">
             <Icon.Pin width={14} height={14} />
@@ -74,9 +79,9 @@ export default function Home() {
           {data?.totals.peopleWaiting > 0 && <p className="mt-0.5 text-[11px] text-white/55">{t('peopleWaiting', { n: data.totals.peopleWaiting })}</p>}
         </div>
 
-        <div className="flex flex-col items-center px-4 pb-5 pt-5 text-center">
+        <div className="relative flex flex-col items-center px-4 pb-8 pt-5 text-center">
           <Link to="/sos" aria-label={t('sosHint')}
-            className="sos-pulse flex h-40 w-40 items-center justify-center rounded-full bg-sos text-5xl font-black tracking-wider text-white ring-8 ring-white/10 active:bg-sos-dark">
+            className="sos-pulse flex h-40 w-40 items-center justify-center rounded-full bg-[radial-gradient(circle_at_35%_30%,#ef3b55,#c8102e_55%,#9e0c24)] text-5xl font-black tracking-wider text-white ring-[10px] ring-white/10 transition active:scale-95">
             SOS
           </Link>
           <p className="mt-4 text-lg font-semibold">{t('sosHint')}</p>
@@ -111,8 +116,8 @@ export default function Home() {
       </Link>
 
       <Link to="/assistant" className="block">
-        <Card className="flex items-center gap-3 border-info/40 bg-info-bg p-3">
-          <span className="rounded-md bg-info p-2 text-white"><Icon.Chat /></span>
+        <Card className="flex items-center gap-3 bg-[linear-gradient(120deg,#e6f0fa,#f4f8fb)] p-3.5">
+          <span className="rounded-xl bg-info p-2.5 text-white shadow-[0_4px_10px_rgb(31_95_153/0.35)]"><Icon.Chat /></span>
           <span className="min-w-0 flex-1">
             <span className="block font-semibold text-ink">{t('askTitle')}</span>
             <span className="block text-xs text-ink-soft">{t('askHomeSub')}</span>

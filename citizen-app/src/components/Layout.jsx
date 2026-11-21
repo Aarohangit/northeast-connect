@@ -24,14 +24,14 @@ export function NetworkBadge() {
 function LanguageSwitch() {
   const { lang, setLang } = useLang()
   return (
-    <div className="flex rounded border border-white/20 text-xs" role="group" aria-label="Language">
+    <div className="flex overflow-hidden rounded-full border border-white/20 bg-white/5 text-xs" role="group" aria-label="Language">
       {LANGUAGES.map((l) => (
         <button
           key={l.code}
           type="button"
           onClick={() => setLang(l.code)}
           aria-pressed={lang === l.code}
-          className={`px-2 py-1 ${lang === l.code ? 'bg-white text-ink font-semibold' : 'text-white/80'}`}
+          className={`px-2.5 py-1 ${lang === l.code ? 'rounded-full bg-white text-ink font-semibold' : 'text-white/75'}`}
         >
           {l.label}
         </button>
@@ -43,11 +43,14 @@ function LanguageSwitch() {
 export function Header() {
   const { t } = useLang()
   return (
-    <header className="sticky top-0 z-[1000] bg-ink text-white">
+    <header className="sticky top-0 z-[1000] bg-[linear-gradient(120deg,#0b1d30_0%,#123a5a_100%)] text-white shadow-[0_2px_12px_rgb(11_29_48/0.25)]">
       <div className="mx-auto flex max-w-md items-center justify-between gap-3 px-4 py-3">
-        <Link to="/" className="leading-tight">
-          <span className="block text-[15px] font-bold tracking-tight">{t('appName')}</span>
-          <span className="block text-[11px] uppercase tracking-[0.12em] text-white/60">{t('region')}</span>
+        <Link to="/" className="flex items-center gap-2.5 leading-tight">
+          <img src="/icon.svg" alt="" className="h-8 w-8 rounded-lg" />
+          <span>
+            <span className="block text-[15px] font-bold tracking-tight">{t('appName')}</span>
+            <span className="block text-[10px] font-medium uppercase tracking-[0.14em] text-white/60">{t('region')}</span>
+          </span>
         </Link>
         <LanguageSwitch />
       </div>
@@ -70,14 +73,14 @@ export function PageTitle({ children, back = true }) {
           <Icon.Back />
         </button>
       )}
-      <h1 className="text-xl font-bold tracking-tight">{children}</h1>
+      <h1 className="text-[22px] font-bold tracking-tight">{children}</h1>
     </div>
   )
 }
 
 export function Card({ className = '', children, ...rest }) {
   return (
-    <div className={`rounded-md border border-line bg-card ${className}`} {...rest}>
+    <div className={`rounded-xl border border-[#0f2237]/[0.06] bg-card shadow-[0_1px_2px_rgb(15_34_55/0.05),0_2px_8px_rgb(15_34_55/0.04)] ${className}`} {...rest}>
       {children}
     </div>
   )

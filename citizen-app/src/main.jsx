@@ -1,6 +1,7 @@
 import { StrictMode } from 'react'
 import { createRoot } from 'react-dom/client'
 import App from './App.jsx'
+import '@fontsource-variable/inter'
 import './index.css'
 
 // Register straight away rather than on window load: someone opening this in a flood

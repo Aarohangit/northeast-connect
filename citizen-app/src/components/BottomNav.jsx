@@ -17,7 +17,7 @@ export default function BottomNav() {
   if (pathname === '/sos' || pathname.startsWith('/request/')) return null
 
   return (
-    <nav className="fixed inset-x-0 bottom-0 z-[1000] border-t border-line bg-white/95 pb-[env(safe-area-inset-bottom)] backdrop-blur" aria-label="Main">
+    <nav className="fixed inset-x-0 bottom-0 z-[1000] border-t border-[#0f2237]/[0.06] bg-white/90 pb-[env(safe-area-inset-bottom)] shadow-[0_-4px_20px_rgb(15_34_55/0.08)] backdrop-blur-md" aria-label="Main">
       <ul className="mx-auto grid max-w-md grid-cols-5">
         {ITEMS.map((item) => {
           if (!item.icon) {
@@ -34,7 +34,7 @@ export default function BottomNav() {
           return (
             <li key={item.to}>
               <NavLink to={item.to} end={item.end}
-                className={({ isActive }) => `flex flex-col items-center gap-0.5 py-2 text-[11px] font-semibold ${isActive ? 'text-ink' : 'text-ink-soft'}`}>
+                className={({ isActive }) => `flex flex-col items-center gap-0.5 py-2 text-[11px] font-semibold ${isActive ? 'text-info' : 'text-ink-soft'}`}>
                 {({ isActive }) => (
                   <>
                     <Glyph width={22} height={22} strokeWidth={isActive ? 2.4 : 1.8} />
