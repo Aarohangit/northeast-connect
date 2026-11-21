@@ -18,8 +18,13 @@ import urllib.request
 import uuid
 from datetime import datetime, timedelta, timezone
 
-SOS_SERVICE = "http://localhost:8081"
-GATEWAY = "http://localhost:8090"
+import os
+
+# Locally, submissions go straight to sos-service. Against a deployment set GATEWAY to its
+# public URL; submissions then go through the gateway, paced under its SOS rate limit.
+GATEWAY = os.getenv("GATEWAY", "http://localhost:8090").rstrip("/")
+REMOTE = "localhost" not in GATEWAY
+SOS_SERVICE = GATEWAY if REMOTE else "http://localhost:8081"
 
 # Teams outside Assam. Registered if missing, so older databases get them too.
 TEAMS = [
@@ -142,10 +147,10 @@ def main():
     # With a free-tier AI key, triage calls are rate-limited; pace submissions so every
     # report gets an AI triage instead of falling back to the rule engine.
     try:
-        engine = json.loads(urllib.request.urlopen("http://localhost:8083/actuator/health", timeout=5).read())["engine"]
+        engine = "gemini" if REMOTE else json.loads(urllib.request.urlopen("http://localhost:8083/actuator/health", timeout=5).read())["engine"]
     except Exception:  # noqa: BLE001
         engine = "rules"
-    gap = 4.5 if engine != "rules" else 0.3
+    gap = 7 if REMOTE else 4.5 if engine != "rules" else 0.3
     print(f"AI triage engine: {engine}" + (" (pacing submissions for the free-tier rate limit)" if engine != "rules" else ""))
 
     now = datetime.now(timezone.utc)

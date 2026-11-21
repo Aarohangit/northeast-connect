@@ -5,7 +5,7 @@ spring:
   application:
     name: rescue-service
   datasource:
-    url: jdbc:mysql://${DB_HOST:localhost}:${DB_PORT:3306}/rescue_db?serverTimezone=UTC
+    url: jdbc:mysql://${DB_HOST:localhost}:${DB_PORT:3306}/rescue_db?serverTimezone=UTC&createDatabaseIfNotExist=true&allowPublicKeyRetrieval=true&useSSL=false
     username: ${DB_USER:flood}
     password: ${DB_PASSWORD:floodpass}
   jpa:
