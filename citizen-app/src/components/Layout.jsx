@@ -43,6 +43,8 @@ function LanguageSwitch() {
 export function Header() {
   const { t } = useLang()
   return (
+    <>
+    <a href="#main" className="sr-only focus:not-sr-only focus:fixed focus:left-2 focus:top-2 focus:z-[2000] focus:rounded focus:bg-white focus:px-3 focus:py-2 focus:font-semibold focus:text-ink">Skip to content</a>
     <header className="sticky top-0 z-[1000] bg-[linear-gradient(120deg,#0b1d30_0%,#123a5a_100%)] text-white shadow-[0_2px_12px_rgb(11_29_48/0.25)]">
       <div className="mx-auto flex max-w-md items-center justify-between gap-3 px-4 py-3">
         <Link to="/" className="flex items-center gap-2.5 leading-tight">
@@ -55,6 +57,7 @@ export function Header() {
         <LanguageSwitch />
       </div>
     </header>
+    </>
   )
 }
 

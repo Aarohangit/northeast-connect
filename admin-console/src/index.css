@@ -57,3 +57,9 @@ body {
 @media (prefers-reduced-motion: reduce) {
   .live-dot, .crit-pulse { animation: none; }
 }
+
+/* Clear keyboard focus for people who don't use a mouse or touch. */
+:focus-visible {
+  outline: 3px solid #1f5f99;
+  outline-offset: 2px;
+}

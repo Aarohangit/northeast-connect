@@ -5,6 +5,7 @@ import { CATEGORY_ICON, Icon } from '../components/icons.jsx'
 import { STATES } from '../data/reference.js'
 import { SPEECH_LOCALE, useLang } from '../i18n/index.jsx'
 import { getPosition } from '../lib/geo.js'
+import { isValidMobile, normalisePhone } from '../lib/phone.js'
 import { enqueue } from '../lib/outbox.js'
 import { useSync } from '../lib/sync.jsx'
 import { useHomeState } from '../lib/region.js'
@@ -20,12 +21,6 @@ function loadProfile() {
   }
 }
 
-function normalisePhone(raw) {
-  const digits = raw.replace(/\D/g, '')
-  if (digits.length === 12 && digits.startsWith('91')) return digits.slice(2)
-  if (digits.length === 11 && digits.startsWith('0')) return digits.slice(1)
-  return digits
-}
 
 function LocationBlock({ state, onRetry }) {
   const { t } = useLang()
@@ -124,7 +119,7 @@ export default function Sos() {
     if (loc.status !== 'ok') errs.location = t('needLocation')
     if (!category) errs.category = t('pickCategory')
     if (!name.trim()) errs.name = t('required')
-    if (phoneDigits.length !== 10) errs.phone = t('phoneInvalid')
+    if (!isValidMobile(phone)) errs.phone = t('phoneInvalid')
     setErrors(errs)
     if (Object.keys(errs).length) {
       document.querySelector('[data-error="true"]')?.scrollIntoView({ behavior: 'smooth', block: 'center' })

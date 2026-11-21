@@ -1,0 +1,55 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+jobs:
+  java-services:
+    name: Java · ${{ matrix.service }}
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        service: [sos-service, rescue-service, api-gateway]
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '21'
+          cache: maven
+      - name: Unit tests
+        working-directory: services/${{ matrix.service }}
+        run: mvn -B -q test
+
+  ai-service:
+    name: Python · ai-service
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+          cache: pip
+      - name: Install
+        working-directory: services/ai-service
+        run: pip install -r requirements.txt -r requirements-dev.txt
+      - name: Tests
+        working-directory: services/ai-service
+        run: python -m pytest -q
+
+  web:
+    name: Web apps
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Citizen app tests and build
+        working-directory: citizen-app
+        run: npm install --no-audit --no-fund && npm test && npm run build
+      - name: Control room build
+        working-directory: admin-console
+        run: npm install --no-audit --no-fund && npm run build

@@ -21,7 +21,7 @@ export default function App() {
       <SyncProvider>
         <BrowserRouter>
           <Header />
-          <main className="mx-auto max-w-md px-4 pb-24 pt-4">
+          <main id="main" tabIndex={-1} className="mx-auto max-w-md px-4 pb-24 pt-4 outline-none">
             <Suspense fallback={null}>
               <Routes>
                 <Route path="/" element={<Home />} />

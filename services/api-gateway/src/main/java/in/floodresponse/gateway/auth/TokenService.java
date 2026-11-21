@@ -30,6 +30,10 @@ public class TokenService {
         if (bytes.length < 32) {
             throw new IllegalStateException("gateway.jwt.secret must be at least 32 bytes");
         }
+        if (props.jwt().secret().startsWith("change-me")) {
+            org.slf4j.LoggerFactory.getLogger(TokenService.class)
+                    .warn("Using the development JWT secret. Set JWT_SECRET in any shared environment.");
+        }
         return new SecretKeySpec(bytes, "HmacSHA256");
     }
 
