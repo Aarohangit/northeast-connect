@@ -3,7 +3,7 @@ import { api } from './api.js'
 import { isOpen, severityOf } from './format.js'
 
 const DataContext = createContext(null)
-const POLL_MS = 8000
+const POLL_MS = 4000
 
 /**
  * One poll loop for the whole console, so every panel shows the same moment in time.
@@ -14,6 +14,8 @@ export function DataProvider({ children }) {
   const [lastOk, setLastOk] = useState(null)
   const [error, setError] = useState(null)
   const busy = useRef(false)
+  const known = useRef(null)
+  const [incoming, setIncoming] = useState([])
 
   const refresh = useCallback(async () => {
     if (busy.current) return
@@ -32,6 +34,12 @@ export function DataProvider({ children }) {
       if (points.length >= 3) {
         hotspots = (await api('/api/ai/hotspots', { method: 'POST', body: { points, radius_km: 1.5, min_reports: 3 } }).catch(() => ({ hotspots: [] }))).hotspots
       }
+      // Anything we haven't seen before (after the first load) is a new SOS: announce it.
+      if (known.current) {
+        const fresh = sos.filter((s) => !known.current.has(s.reference))
+        if (fresh.length) setIncoming((list) => [...fresh.map((s) => ({ ...s, arrivedAt: Date.now() })), ...list].slice(0, 5))
+      }
+      known.current = new Set(sos.map((s) => s.reference))
       setState({ sos, teams, open, all, hotspots, loaded: true })
       setLastOk(Date.now())
       setError(null)
@@ -48,7 +56,9 @@ export function DataProvider({ children }) {
     return () => clearInterval(id)
   }, [refresh])
 
-  return <DataContext.Provider value={{ ...state, lastOk, error, refresh }}>{children}</DataContext.Provider>
+  const dismiss = useCallback((ref) => setIncoming((list) => list.filter((s) => s.reference !== ref)), [])
+
+  return <DataContext.Provider value={{ ...state, lastOk, error, refresh, incoming, dismiss }}>{children}</DataContext.Provider>
 }
 
 export function useData() {

@@ -1,5 +1,6 @@
 import { useMemo, useState } from 'react'
 import Detail from '../components/Detail.jsx'
+import IncomingAlerts from '../components/IncomingAlerts.jsx'
 import Kpis from '../components/Kpis.jsx'
 import OpsMap from '../components/OpsMap.jsx'
 import Queue, { TABS } from '../components/Queue.jsx'
@@ -34,6 +35,7 @@ export default function Command() {
 
   return (
     <>
+      <IncomingAlerts onOpen={select} />
       <Kpis sos={scoped} teams={teams} all={all} />
       <div className="flex min-h-0 flex-1">
         <Queue sos={sos} tab={tab} setTab={setTab} district={district} setDistrict={setDistrict}
