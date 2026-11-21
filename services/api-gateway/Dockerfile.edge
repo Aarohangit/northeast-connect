@@ -4,7 +4,8 @@ FROM node:22-alpine AS web
 WORKDIR /web
 COPY citizen-app/package.json citizen-app/package-lock.json citizen-app/
 COPY admin-console/package.json admin-console/package-lock.json admin-console/
-RUN cd citizen-app && npm ci --no-audit --no-fund && cd ../admin-console && npm ci --no-audit --no-fund
+# npm install, not npm ci: the lockfile is made on Windows and lacks some Linux-only optional packages.
+RUN cd citizen-app && npm install --no-audit --no-fund && cd ../admin-console && npm install --no-audit --no-fund
 COPY citizen-app citizen-app
 COPY admin-console admin-console
 # Empty API URL: the apps call /api on the same origin.
