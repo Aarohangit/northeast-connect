@@ -12,7 +12,7 @@ spring:
             - id: sos-service
               uri: ${SOS_SERVICE_URL:http://localhost:8081}
               predicates:
-                - Path=/api/sos,/api/sos/**
+                - Path=/api/sos,/api/sos/**,/api/public/**
             - id: rescue-service
               uri: ${RESCUE_SERVICE_URL:http://localhost:8082}
               predicates:

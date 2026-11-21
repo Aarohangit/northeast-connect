@@ -44,6 +44,8 @@ public class SecurityConfig {
                         .requestMatchers(HttpMethod.POST, "/api/auth/login").permitAll()
                         // The public emergency assistant. Rate-limited per network in PublicRateLimitFilter.
                         .requestMatchers(HttpMethod.POST, "/api/ai/assistant").permitAll()
+                        // Public live map: rounded locations and counts, no personal data.
+                        .requestMatchers(HttpMethod.GET, "/api/public/**").permitAll()
                         .requestMatchers("/actuator/health", "/error").permitAll()
                         .requestMatchers(HttpMethod.OPTIONS, "/**").permitAll()
 

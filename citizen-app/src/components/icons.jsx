@@ -26,6 +26,9 @@ export const Icon = {
   Chat: (p) => <svg {...base} {...p}><path d="M4 5h16v11H9l-5 4V5z" /><path d="M8 9h8M8 12h5" /></svg>,
   Speaker: (p) => <svg {...base} {...p}><path d="M4 9h4l5-4v14l-5-4H4z" /><path d="M16 9a4 4 0 010 6M18.5 6.5a8 8 0 010 11" /></svg>,
   Send: (p) => <svg {...base} {...p}><path d="M4 12l16-8-6 16-2-7-8-1z" /></svg>,
+  Home: (p) => <svg {...base} {...p}><path d="M3 11l9-7 9 7v9a1 1 0 01-1 1h-5v-6h-6v6H4a1 1 0 01-1-1v-9z" /></svg>,
+  Map: (p) => <svg {...base} {...p}><path d="M9 4L3 6v14l6-2 6 2 6-2V4l-6 2-6-2z" /><path d="M9 4v14M15 6v14" /></svg>,
+  Heart: (p) => <svg {...base} {...p}><path d="M12 20s-7-4.4-7-10a4 4 0 017-2.6A4 4 0 0119 10c0 5.6-7 10-7 10z" /></svg>,
   Minus: (p) => <svg {...base} {...p}><path d="M5 12h14" /></svg>,
   Plus: (p) => <svg {...base} {...p}><path d="M12 5v14M5 12h14" /></svg>,
 }
