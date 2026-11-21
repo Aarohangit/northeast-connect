@@ -10,7 +10,7 @@ self.addEventListener('activate', (e) => e.waitUntil(self.clients.claim()))
 // The whole app shell is cached, so it opens with no network at all.
 precacheAndRoute(self.__WB_MANIFEST)
 cleanupOutdatedCaches()
-registerRoute(new NavigationRoute(createHandlerBoundToURL('index.html')))
+registerRoute(new NavigationRoute(createHandlerBoundToURL('index.html'), { denylist: [/^\/admin/, /^\/api/] }))
 
 // Map tiles the person has already seen stay available offline.
 registerRoute(

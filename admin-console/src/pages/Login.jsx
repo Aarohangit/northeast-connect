@@ -24,7 +24,7 @@ export default function Login() {
     <div className="flex min-h-full items-center justify-center bg-[radial-gradient(120%_90%_at_50%_0%,#1d4f78_0%,#0f2237_60%,#0b1a2b_100%)] p-6">
       <div className="w-full max-w-sm">
         <div className="mb-6 flex items-center gap-3 text-white">
-          <img src="/icon.svg" alt="" className="h-9 w-9" />
+          <img src={`${import.meta.env.BASE_URL}icon.svg`} alt="" className="h-9 w-9" />
           <div className="leading-tight">
             <div className="text-lg font-bold tracking-tight">Northeast Connect · Control Room</div>
             <div className="text-[11px] uppercase tracking-[0.16em] text-white/50">North East India · Authorised staff only</div>

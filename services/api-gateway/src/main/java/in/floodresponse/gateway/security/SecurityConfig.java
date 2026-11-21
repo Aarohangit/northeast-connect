@@ -47,6 +47,8 @@ public class SecurityConfig {
                         // Public live map: rounded locations and counts, no personal data.
                         .requestMatchers(HttpMethod.GET, "/api/public/**").permitAll()
                         .requestMatchers("/actuator/health", "/error").permitAll()
+                        // The citizen app and control room themselves (static files); all data still goes through /api.
+                        .requestMatchers(request -> !request.getRequestURI().startsWith("/api")).permitAll()
                         .requestMatchers(HttpMethod.OPTIONS, "/**").permitAll()
 
                         // Field teams can report progress on their own operations.

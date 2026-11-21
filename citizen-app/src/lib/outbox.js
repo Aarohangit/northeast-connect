@@ -12,7 +12,8 @@
  */
 import { openDB } from 'idb'
 
-export const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:8090'
+// Empty string = same origin (when the gateway serves the app); unset = local development.
+export const API_URL = import.meta.env.VITE_API_URL ?? 'http://localhost:8090'
 
 const DB_NAME = 'flood-citizen'
 const STORE = 'outbox'

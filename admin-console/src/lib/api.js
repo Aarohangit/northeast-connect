@@ -1,4 +1,5 @@
-const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:8090'
+// Empty string = same origin (when the gateway serves the console); unset = local development.
+const API_URL = import.meta.env.VITE_API_URL ?? 'http://localhost:8090'
 
 let token = sessionStorage.getItem('token')
 let onUnauthorized = () => {}

@@ -37,7 +37,7 @@ export default function TopBar() {
     <header className="flex h-14 shrink-0 items-center justify-between gap-4 bg-[linear-gradient(120deg,#0b1d30_0%,#123a5a_100%)] px-5 text-white shadow-[0_2px_12px_rgb(11_29_48/0.25)]">
       <div className="flex items-center gap-6">
         <div className="flex items-center gap-2.5">
-          <img src="/icon.svg" alt="" className="h-8 w-8 rounded-lg" />
+          <img src={`${import.meta.env.BASE_URL}icon.svg`} alt="" className="h-8 w-8 rounded-lg" />
           <div className="leading-tight">
             <div className="text-[13px] font-bold tracking-tight">Northeast Connect · Control Room</div>
             <div className="text-[10px] uppercase tracking-[0.14em] text-white/50">North East India · {user.district ?? 'All states'}</div>
