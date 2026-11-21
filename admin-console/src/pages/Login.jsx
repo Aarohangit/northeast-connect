@@ -21,7 +21,7 @@ export default function Login() {
   }
 
   return (
-    <div className="flex min-h-full items-center justify-center bg-ink p-6">
+    <div className="flex min-h-full items-center justify-center bg-[radial-gradient(120%_90%_at_50%_0%,#1d4f78_0%,#0f2237_60%,#0b1a2b_100%)] p-6">
       <div className="w-full max-w-sm">
         <div className="mb-6 flex items-center gap-3 text-white">
           <img src="/icon.svg" alt="" className="h-9 w-9" />
@@ -30,7 +30,7 @@ export default function Login() {
             <div className="text-[11px] uppercase tracking-[0.16em] text-white/50">North East India · Authorised staff only</div>
           </div>
         </div>
-        <form onSubmit={submit} className="rounded-sm bg-panel p-5">
+        <form onSubmit={submit} className="rounded-2xl bg-panel p-6 shadow-[0_20px_50px_rgb(0_0_0/0.35)]">
           <label className="mb-3 block">
             <span className="mb-1 block text-[12px] font-semibold text-muted">Username</span>
             <input value={username} onChange={(e) => setUsername(e.target.value)} autoComplete="username" autoFocus

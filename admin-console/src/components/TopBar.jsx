@@ -32,12 +32,12 @@ function LiveIndicator() {
 export default function TopBar() {
   const { user, logout } = useAuth()
   const link = ({ isActive }) =>
-    `px-3 py-1.5 rounded-sm text-[13px] font-medium ${isActive ? 'bg-white/12 text-white' : 'text-white/65 hover:text-white'}`
+    `px-3.5 py-1.5 rounded-full text-[13px] font-semibold ${isActive ? 'bg-white text-ink' : 'text-white/70 hover:text-white'}`
   return (
-    <header className="flex h-12 shrink-0 items-center justify-between gap-4 bg-ink px-4 text-white">
+    <header className="flex h-14 shrink-0 items-center justify-between gap-4 bg-[linear-gradient(120deg,#0b1d30_0%,#123a5a_100%)] px-5 text-white shadow-[0_2px_12px_rgb(11_29_48/0.25)]">
       <div className="flex items-center gap-6">
         <div className="flex items-center gap-2.5">
-          <img src="/icon.svg" alt="" className="h-6 w-6" />
+          <img src="/icon.svg" alt="" className="h-8 w-8 rounded-lg" />
           <div className="leading-tight">
             <div className="text-[13px] font-bold tracking-tight">Northeast Connect · Control Room</div>
             <div className="text-[10px] uppercase tracking-[0.14em] text-white/50">North East India · {user.district ?? 'All states'}</div>
