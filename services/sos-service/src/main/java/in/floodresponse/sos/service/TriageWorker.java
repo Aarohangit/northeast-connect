@@ -124,6 +124,7 @@ class TriageWorker {
         t.setConfidence(r.confidence());
         t.setNeedsHumanReview(r.needs_human_review() || dup != null);
         t.setEngine(r.engine());
+        t.setModel(cut(r.model(), 40));
         if (dup != null) {
             t.setPossibleDuplicateOf(dup.reference());
             t.setDuplicateScore(dup.score());

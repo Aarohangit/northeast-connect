@@ -14,6 +14,15 @@ New-Item -ItemType Directory -Force -Path $logs | Out-Null
 # Networks that inspect HTTPS (campus Wi-Fi, some antivirus) break Maven downloads otherwise.
 $env:MAVEN_OPTS = '-Djavax.net.ssl.trustStoreType=Windows-ROOT'
 
+# AI keys saved with [Environment]::SetEnvironmentVariable(..., 'User') may not be in this
+# session yet; pass them on to the services without ever printing them.
+foreach ($name in 'GEMINI_API_KEY', 'ANTHROPIC_API_KEY') {
+    if (-not [Environment]::GetEnvironmentVariable($name, 'Process')) {
+        $value = [Environment]::GetEnvironmentVariable($name, 'User')
+        if ($value) { [Environment]::SetEnvironmentVariable($name, $value, 'Process') }
+    }
+}
+
 function Test-Port([int]$port) {
     [bool](Get-NetTCPConnection -LocalPort $port -State Listen -ErrorAction SilentlyContinue)
 }

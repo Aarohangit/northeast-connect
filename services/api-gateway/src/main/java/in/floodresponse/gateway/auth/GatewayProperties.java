@@ -8,7 +8,8 @@ import java.util.List;
 public record GatewayProperties(
         Jwt jwt,
         Cors cors,
-        SosRateLimit sosRateLimit,
+        RateLimit sosRateLimit,
+        RateLimit assistantRateLimit,
         String staffPassword,
         List<Staff> staff
 ) {
@@ -18,7 +19,7 @@ public record GatewayProperties(
     public record Cors(List<String> origins) {
     }
 
-    public record SosRateLimit(int perMinute) {
+    public record RateLimit(int perMinute) {
     }
 
     public record Staff(String username, String name, Role role, String district) {

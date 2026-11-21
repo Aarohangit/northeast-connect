@@ -35,7 +35,7 @@ public class AiClient {
                                String translation, String detected_language, Integer people_count,
                                List<String> vulnerable, List<String> medical_conditions, List<String> needs,
                                List<String> location_hints, String water_level, boolean water_rising,
-                               String confidence, boolean needs_human_review, String engine) {
+                               String confidence, boolean needs_human_review, String engine, String model) {
     }
 
     public record Report(String reference, double latitude, double longitude, Instant received_at,

@@ -139,6 +139,15 @@ def main():
         added += 1
     print(f"Rescue teams: {len(existing) + added} ({added} added)")
 
+    # With a free-tier AI key, triage calls are rate-limited; pace submissions so every
+    # report gets an AI triage instead of falling back to the rule engine.
+    try:
+        engine = json.loads(urllib.request.urlopen("http://localhost:8083/actuator/health", timeout=5).read())["engine"]
+    except Exception:  # noqa: BLE001
+        engine = "rules"
+    gap = 4.5 if engine != "rules" else 0.3
+    print(f"AI triage engine: {engine}" + (" (pacing submissions for the free-tier rate limit)" if engine != "rules" else ""))
+
     now = datetime.now(timezone.utc)
     refs = {}
     print(f"Submitting {len(REPORTS)} SOS reports from across the North East…")
@@ -151,7 +160,7 @@ def main():
             "reportedAt": (now - timedelta(minutes=offline_min)).isoformat(),
         }
         refs[name] = call(SOS_SERVICE, "POST", "/api/sos", body)["reference"]
-        time.sleep(0.3)  # spread the timestamps a little, like real traffic
+        time.sleep(gap)
 
     status = lambda ref, s, note: call(GATEWAY, "PATCH", f"/api/sos/{ref}/status",
                                        {"status": s, "note": note, "changedBy": "admin"}, token)
@@ -177,7 +186,7 @@ def main():
 
     status(refs["Test User"], "REJECTED", "Test message, no emergency")
 
-    time.sleep(3)  # let background triage finish
+    time.sleep(3 if engine == "rules" else 10)  # let background triage finish
     salma = call(GATEWAY, "GET", f"/api/sos/{refs['Salma Khatun']}", token=token)
     dup_of = (salma.get("triage") or {}).get("possibleDuplicateOf")
     print(f"Duplicate check: {refs['Salma Khatun']} flagged as duplicate of {dup_of} (expected {refs['Rafiqul Islam']})")

@@ -76,7 +76,7 @@ export default function Queue({ sos, tab, setTab, district, setDistrict, distric
                   <span className="mr-1 text-[11px] text-muted">{s.district ?? 'District unknown'}</span>
                   {tab === 'closed' && <StatusBadge status={s.status} />}
                   {s.triage?.possibleDuplicateOf && s.status === 'RECEIVED' && <Tag tone="warn">Possible duplicate</Tag>}
-                  {s.triage?.engine === 'claude' && s.triage.needsHumanReview && s.status === 'RECEIVED' && !s.triage.possibleDuplicateOf && <Tag>Check carefully</Tag>}
+                  {s.triage?.engine !== 'rules' && s.triage?.needsHumanReview && s.status === 'RECEIVED' && !s.triage.possibleDuplicateOf && <Tag>Check carefully</Tag>}
                   {s.channel === 'QUEUED_SYNC' && <Tag tone="info" title="The phone was offline and sent this later">Delayed</Tag>}
                   {s.triage?.waterRising && <Tag tone="crit">Water rising</Tag>}
                 </div>

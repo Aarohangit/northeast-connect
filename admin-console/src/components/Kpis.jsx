@@ -17,7 +17,7 @@ export default function Kpis({ sos, teams, all }) {
   const critical = open.filter((s) => severityOf(s) === 'CRITICAL').length
   const review = sos.filter((s) => s.status === 'RECEIVED').length
   // The rule engine marks everything for review, so only count real flags: model-raised or duplicates.
-  const flagged = sos.filter((s) => s.status === 'RECEIVED' && (s.triage?.possibleDuplicateOf || (s.triage?.engine === 'claude' && s.triage.needsHumanReview))).length
+  const flagged = sos.filter((s) => s.status === 'RECEIVED' && (s.triage?.possibleDuplicateOf || (s.triage?.engine !== 'rules' && s.triage?.needsHumanReview))).length
   const awaitingDispatch = sos.filter((s) => s.status === 'VERIFIED').length
   const deployed = teams.filter((t) => t.status === 'DEPLOYED').length
   const available = teams.filter((t) => t.status === 'AVAILABLE').length

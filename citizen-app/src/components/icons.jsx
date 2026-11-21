@@ -23,6 +23,9 @@ export const Icon = {
   Refresh: (p) => <svg {...base} {...p}><path d="M20 11a8 8 0 10-2.3 5.7M20 4v7h-7" /></svg>,
   Landslide: (p) => <svg {...base} {...p}><path d="M3 20l6-11 4 6 2-3 6 8H3z" /><circle cx="16" cy="16.5" r="1" /><circle cx="13" cy="18" r=".8" /></svg>,
   Quake: (p) => <svg {...base} {...p}><path d="M2 12h3l2-5 3 10 3-8 2 5 2-2h5" /></svg>,
+  Chat: (p) => <svg {...base} {...p}><path d="M4 5h16v11H9l-5 4V5z" /><path d="M8 9h8M8 12h5" /></svg>,
+  Speaker: (p) => <svg {...base} {...p}><path d="M4 9h4l5-4v14l-5-4H4z" /><path d="M16 9a4 4 0 010 6M18.5 6.5a8 8 0 010 11" /></svg>,
+  Send: (p) => <svg {...base} {...p}><path d="M4 12l16-8-6 16-2-7-8-1z" /></svg>,
   Minus: (p) => <svg {...base} {...p}><path d="M5 12h14" /></svg>,
   Plus: (p) => <svg {...base} {...p}><path d="M12 5v14M5 12h14" /></svg>,
 }

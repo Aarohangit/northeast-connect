@@ -31,14 +31,14 @@ public record SosView(
                              String translation, String detectedLanguage, Integer peopleCount,
                              List<String> vulnerable, List<String> needs, List<String> medicalConditions,
                              List<String> locationHints, String waterLevel, boolean waterRising,
-                             String confidence, boolean needsHumanReview, String engine,
+                             String confidence, boolean needsHumanReview, String engine, String model,
                              String possibleDuplicateOf, Double duplicateScore, Instant triagedAt) {
         static TriageView of(Triage t) {
             if (t == null) return null;
             return new TriageView(t.getSeverity(), t.getSuggestedCategory(), t.getSeverityReason(), t.getSummary(),
                     t.getTranslation(), t.getDetectedLanguage(), t.getPeopleCount(), split(t.getVulnerable()),
                     split(t.getNeeds()), split(t.getMedicalConditions()), split(t.getLocationHints()),
-                    t.getWaterLevel(), t.isWaterRising(), t.getConfidence(), t.isNeedsHumanReview(), t.getEngine(),
+                    t.getWaterLevel(), t.isWaterRising(), t.getConfidence(), t.isNeedsHumanReview(), t.getEngine(), t.getModel(),
                     t.getPossibleDuplicateOf(), t.getDuplicateScore(), t.getTriagedAt());
         }
 

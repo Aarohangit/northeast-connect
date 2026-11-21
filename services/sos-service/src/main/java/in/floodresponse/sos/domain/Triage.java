@@ -66,6 +66,9 @@ public class Triage {
     @Column(length = 10)
     private String engine;
 
+    @Column(length = 40)
+    private String model;
+
     @Column(length = 16)
     private String possibleDuplicateOf;
 
@@ -119,6 +122,8 @@ public class Triage {
     public boolean isNeedsHumanReview() { return needsHumanReview; }
     public void setNeedsHumanReview(boolean needsHumanReview) { this.needsHumanReview = needsHumanReview; }
     public String getEngine() { return engine; }
+    public String getModel() { return model; }
+    public void setModel(String model) { this.model = model; }
     public void setEngine(String engine) { this.engine = engine; }
     public String getPossibleDuplicateOf() { return possibleDuplicateOf; }
     public void setPossibleDuplicateOf(String possibleDuplicateOf) { this.possibleDuplicateOf = possibleDuplicateOf; }

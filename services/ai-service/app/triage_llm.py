@@ -1,17 +1,13 @@
-"""Report triage with Claude. Returns None on any failure so the caller can fall back to rules."""
+"""Report triage with an AI model (Gemini or Claude). Returns None on any failure so the caller falls back to rules."""
 
 import json
 import logging
-import os
 
-import anthropic
-
+from . import llm
 from .schemas import (Category, Confidence, Need, Severity, TriageRequest, TriageResult, Vulnerable,
                       WaterLevel)
 
 log = logging.getLogger("triage.llm")
-
-MODEL = os.getenv("TRIAGE_MODEL", "claude-opus-5-5")
 
 SYSTEM = """You are the triage desk in a disaster control room for North East India (Assam, Arunachal Pradesh, Manipur, Meghalaya, Mizoram, Nagaland, Sikkim, Tripura). Citizens send short SOS reports from their phones during floods, flash floods, landslides, earthquakes and storms, often in Assamese, Bengali, Hindi, English, a local language, or a mix written in Latin script. Your output goes to a duty officer who decides which rescue team to send. They will act on what you write, so be precise and never invent facts.
 
@@ -68,21 +64,6 @@ SCHEMA = {
     "additionalProperties": False,
 }
 
-_client: anthropic.Anthropic | None = None
-
-
-def available() -> bool:
-    return bool(os.getenv("ANTHROPIC_API_KEY") or os.getenv("ANTHROPIC_AUTH_TOKEN"))
-
-
-def _get_client() -> anthropic.Anthropic:
-    global _client
-    if _client is None:
-        # An SOS can't wait on a slow call; the rules engine is the safety net.
-        _client = anthropic.Anthropic(timeout=45.0, max_retries=1)
-    return _client
-
-
 def _user_message(req: TriageRequest) -> str:
     meta = {
         "category_picked_in_app": req.category.value if req.category else None,
@@ -95,46 +76,18 @@ def _user_message(req: TriageRequest) -> str:
     )
 
 
+def available() -> bool:
+    return llm.provider() is not None
+
+
 def triage(req: TriageRequest) -> TriageResult | None:
-    if not available():
+    data = llm.generate_json(SYSTEM, _user_message(req), SCHEMA)
+    if not data:
         return None
     try:
-        response = _get_client().beta.messages.create(
-            model=MODEL,
-            max_tokens=8000,
-            system=SYSTEM,
-            messages=[{"role": "user", "content": _user_message(req)}],
-            output_config={"effort": "medium", "format": {"type": "json_schema", "schema": SCHEMA}},
-            betas=["server-side-fallback-2026-07-01"],
-            fallbacks="default",
-        )
-    except anthropic.AuthenticationError:
-        log.error("Anthropic API key rejected; using rules engine")
-        return None
-    except anthropic.RateLimitError:
-        log.warning("Rate limited by Anthropic API; using rules engine")
-        return None
-    except anthropic.APIStatusError as e:
-        log.warning("Anthropic API error %s; using rules engine", e.status_code)
-        return None
-    except anthropic.APIConnectionError:
-        log.warning("Anthropic API unreachable; using rules engine")
-        return None
-
-    if response.stop_reason == "refusal":
-        log.warning("Triage request declined by the model; using rules engine")
-        return None
-    if response.stop_reason == "max_tokens":
-        log.warning("Triage output truncated; using rules engine")
-        return None
-
-    text = next((b.text for b in response.content if b.type == "text"), None)
-    if not text:
-        return None
-    try:
-        data = json.loads(text)
-        data["engine"] = "claude"
+        data["engine"] = llm.provider()
+        data["model"] = data.pop("_model", None)
         return TriageResult.model_validate(data)
-    except (json.JSONDecodeError, ValueError):
-        log.exception("Could not parse triage output")
+    except ValueError:
+        log.exception("AI triage output did not match the schema")
         return None

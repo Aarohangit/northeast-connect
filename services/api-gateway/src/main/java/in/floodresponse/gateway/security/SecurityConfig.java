@@ -42,6 +42,8 @@ public class SecurityConfig {
                         .requestMatchers(HttpMethod.GET, "/api/sos/*/status").permitAll()
                         .requestMatchers(HttpMethod.PATCH, "/api/sos/*/location").permitAll()
                         .requestMatchers(HttpMethod.POST, "/api/auth/login").permitAll()
+                        // The public emergency assistant. Rate-limited per network in PublicRateLimitFilter.
+                        .requestMatchers(HttpMethod.POST, "/api/ai/assistant").permitAll()
                         .requestMatchers("/actuator/health", "/error").permitAll()
                         .requestMatchers(HttpMethod.OPTIONS, "/**").permitAll()
 

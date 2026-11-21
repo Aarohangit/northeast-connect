@@ -3,6 +3,7 @@ import { BrowserRouter, Navigate, Route, Routes } from 'react-router'
 import { Header } from './components/Layout.jsx'
 import { LangProvider } from './i18n/index.jsx'
 import { SyncProvider } from './lib/sync.jsx'
+import Assistant from './pages/Assistant.jsx'
 import Home from './pages/Home.jsx'
 import RequestStatus from './pages/RequestStatus.jsx'
 import Safety from './pages/Safety.jsx'
@@ -23,6 +24,7 @@ export default function App() {
                 <Route path="/" element={<Home />} />
                 <Route path="/sos" element={<Sos />} />
                 <Route path="/request/:id" element={<RequestStatus />} />
+                <Route path="/assistant" element={<Assistant />} />
                 <Route path="/safety" element={<Safety />} />
                 <Route path="/shelters" element={<Shelters />} />
                 <Route path="*" element={<Navigate to="/" replace />} />

@@ -5,6 +5,8 @@ import { useData } from '../lib/data.jsx'
 import { ago, CATEGORY_LABEL, clock, humanize, LANGUAGE_LABEL, plural, TEAM_TYPE_LABEL } from '../lib/format.js'
 import { SeverityBadge, StatusBadge, Tag } from './Badges.jsx'
 
+const ENGINE_LABEL = { gemini: 'Gemini', claude: 'Claude', rules: 'Rule engine' }
+
 function Section({ title, right, children }) {
   return (
     <section className="border-b border-line-2 px-4 py-3">
@@ -212,7 +214,7 @@ function Triage({ sos, onSelect }) {
   return (
     <Section
       title="AI triage"
-      right={<span className="text-[10px] text-faint">{t.engine === 'claude' ? 'Claude' : 'Rule engine'} · confidence {t.confidence?.toLowerCase()}</span>}
+      right={<span className="text-[10px] text-faint">{ENGINE_LABEL[t.engine] ?? t.engine}{t.model ? ` (${t.model})` : ''} · confidence {t.confidence?.toLowerCase()}</span>}
     >
       <div className="rounded-sm border border-line bg-canvas/60 p-2.5">
         <div className="flex items-center gap-2">

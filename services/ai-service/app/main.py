@@ -2,18 +2,18 @@ import logging
 
 from fastapi import FastAPI
 
-from . import duplicates, hotspots, triage_llm, triage_rules
-from .schemas import (DuplicateRequest, DuplicateResponse, HotspotRequest, HotspotResponse, TriageRequest,
-                      TriageResult)
+from . import assistant, duplicates, hotspots, llm, triage_llm, triage_rules
+from .schemas import (AssistantReply, AssistantRequest, DuplicateRequest, DuplicateResponse, HotspotRequest,
+                      HotspotResponse, TriageRequest, TriageResult)
 
 logging.basicConfig(level=logging.INFO, format="%(asctime)s %(levelname)s %(name)s: %(message)s")
 
-app = FastAPI(title="ai-service", description="SOS report triage, duplicate detection and hotspots", version="1.0")
+app = FastAPI(title="ai-service", description="SOS triage, emergency assistant, duplicate detection and hotspots", version="1.0")
 
 
 @app.get("/actuator/health")
 def health():
-    return {"status": "UP", "engine": "claude" if triage_llm.available() else "rules", "model": triage_llm.MODEL}
+    return {"status": "UP", "engine": llm.provider() or "rules", "model": llm.model_name()}
 
 
 @app.post("/api/ai/triage", response_model=TriageResult)
@@ -30,3 +30,9 @@ def find_duplicates(req: DuplicateRequest) -> DuplicateResponse:
 @app.post("/api/ai/hotspots", response_model=HotspotResponse)
 def find_hotspots(req: HotspotRequest) -> HotspotResponse:
     return hotspots.find(req)
+
+
+@app.post("/api/ai/assistant", response_model=AssistantReply)
+def ask(req: AssistantRequest) -> AssistantReply:
+    """Community emergency assistant: answers in the person's language from vetted guidance."""
+    return assistant.answer(req)

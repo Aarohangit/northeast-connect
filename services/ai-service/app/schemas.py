@@ -85,7 +85,8 @@ class TriageResult(BaseModel):
     water_rising: bool
     confidence: Confidence
     needs_human_review: bool
-    engine: str = Field(description="'claude' or 'rules'")
+    engine: str = Field(description="'gemini', 'claude' or 'rules'")
+    model: str | None = None
 
 
 # ---- duplicates ----
@@ -146,3 +147,38 @@ class Hotspot(BaseModel):
 class HotspotResponse(BaseModel):
     hotspots: list[Hotspot]
     unclustered: int
+
+
+# ---- assistant ----
+
+class Action(str, Enum):
+    OPEN_SOS = "OPEN_SOS"
+    CALL_112 = "CALL_112"
+    CALL_108 = "CALL_108"
+    SHOW_SHELTERS = "SHOW_SHELTERS"
+    GUIDE_FLOOD = "GUIDE_FLOOD"
+    GUIDE_LANDSLIDE = "GUIDE_LANDSLIDE"
+    GUIDE_EARTHQUAKE = "GUIDE_EARTHQUAKE"
+
+
+class ChatMessage(BaseModel):
+    role: str = Field(pattern="^(user|assistant)$")
+    content: str = Field(min_length=1, max_length=1500)
+
+
+class AssistantRequest(BaseModel):
+    messages: list[ChatMessage] = Field(min_length=1, max_length=20)
+    language: str = Field("en", pattern="^(as|hi|en|bn)$")
+    state: str | None = Field(None, max_length=2)
+    latitude: float | None = Field(None, ge=-90, le=90)
+    longitude: float | None = Field(None, ge=-180, le=180)
+    alerts: list[str] = Field(default_factory=list, max_length=10, description="Current official alerts for the area")
+
+
+class AssistantReply(BaseModel):
+    reply: str
+    emergency: bool
+    actions: list[Action]
+    follow_ups: list[str]
+    engine: str
+    model: str | None = None

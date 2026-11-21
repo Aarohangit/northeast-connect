@@ -31,6 +31,8 @@ gateway:
     origins: ${CORS_ORIGINS:http://localhost:5173,http://localhost:5174}
   sos-rate-limit:
     per-minute: ${SOS_RATE_LIMIT:10}
+  assistant-rate-limit:
+    per-minute: ${ASSISTANT_RATE_LIMIT:20}
   # Demo control-room accounts. Passwords are hashed at startup and never stored in plain text.
   staff-password: ${STAFF_PASSWORD:Flood@2026}
   staff:

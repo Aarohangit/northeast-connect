@@ -67,6 +67,17 @@ export default function Home() {
         </section>
       )}
 
+      <Link to="/assistant" className="block">
+        <Card className="flex items-center gap-3 border-info/40 bg-info-bg p-3">
+          <span className="rounded-md bg-info p-2 text-white"><Icon.Chat /></span>
+          <span className="min-w-0 flex-1">
+            <span className="block font-semibold text-ink">{t('askTitle')}</span>
+            <span className="block text-xs text-ink-soft">{t('askHomeSub')}</span>
+          </span>
+          <Icon.Chevron className="text-info" />
+        </Card>
+      </Link>
+
       <section className="grid grid-cols-2 gap-3">
         <Link to="/safety">
           <Card className="h-full p-3">

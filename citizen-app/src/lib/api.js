@@ -21,3 +21,6 @@ export const fetchStatus = (reference) => request(`/api/sos/${encodeURIComponent
 
 export const updateLocation = (reference, body) =>
   request(`/api/sos/${encodeURIComponent(reference)}/location`, { method: 'PATCH', body: JSON.stringify(body) })
+
+export const askAssistant = (body) =>
+  request('/api/ai/assistant', { method: 'POST', body: JSON.stringify(body), timeout: 45_000 })
