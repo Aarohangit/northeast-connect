@@ -1,0 +1,56 @@
+server:
+  port: ${PORT:8090}
+
+spring:
+  application:
+    name: api-gateway
+  cloud:
+    gateway:
+      server:
+        webmvc:
+          routes:
+            - id: sos-service
+              uri: ${SOS_SERVICE_URL:http://localhost:8081}
+              predicates:
+                - Path=/api/sos,/api/sos/**
+            - id: rescue-service
+              uri: ${RESCUE_SERVICE_URL:http://localhost:8082}
+              predicates:
+                - Path=/api/teams,/api/teams/**,/api/assignments,/api/assignments/**
+            - id: ai-service
+              uri: ${AI_SERVICE_URL:http://localhost:8083}
+              predicates:
+                - Path=/api/ai/**
+
+gateway:
+  jwt:
+    # 32+ bytes. Override in any shared environment.
+    secret: ${JWT_SECRET:change-me-flood-response-dev-secret-2026}
+    ttl-minutes: ${JWT_TTL_MINUTES:720}
+  cors:
+    origins: ${CORS_ORIGINS:http://localhost:5173,http://localhost:5174}
+  sos-rate-limit:
+    per-minute: ${SOS_RATE_LIMIT:10}
+  # Demo control-room accounts. Passwords are hashed at startup and never stored in plain text.
+  staff-password: ${STAFF_PASSWORD:Flood@2026}
+  staff:
+    - username: admin
+      name: State Control Room
+      role: SUPER_ADMIN
+    - username: dc.kamrup
+      name: DDMA Kamrup Metro
+      role: DISTRICT_ADMIN
+      district: Kamrup Metro
+    - username: dc.barpeta
+      name: DDMA Barpeta
+      role: DISTRICT_ADMIN
+      district: Barpeta
+    - username: coordinator
+      name: Rescue Coordination Desk
+      role: RESCUE_COORDINATOR
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info

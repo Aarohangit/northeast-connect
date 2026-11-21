@@ -1,0 +1,58 @@
+@import "tailwindcss";
+
+@theme {
+  --color-ink: #12161c;
+  --color-ink-2: #2a313b;
+  --color-muted: #5f6873;
+  --color-faint: #8b939d;
+  --color-canvas: #eef0f2;
+  --color-panel: #ffffff;
+  --color-line: #d9dde2;
+  --color-line-2: #e8ebee;
+
+  --color-crit: #c8102e;
+  --color-crit-bg: #fbe9ec;
+  --color-high: #d35c00;
+  --color-high-bg: #fdf0e6;
+  --color-med: #9a7400;
+  --color-med-bg: #fbf5e1;
+  --color-low: #3c6e9e;
+  --color-low-bg: #e9f0f7;
+  --color-pend: #6b7280;
+  --color-pend-bg: #eef0f2;
+  --color-ok: #1d6b3a;
+  --color-ok-bg: #e5f3e9;
+  --color-act: #1f5f99;
+
+  --font-sans: "Inter", system-ui, "Segoe UI", "Noto Sans", "Nirmala UI", Roboto, sans-serif;
+  --font-mono: ui-monospace, "Cascadia Mono", "Consolas", monospace;
+}
+
+html, body, #root {
+  height: 100%;
+}
+
+body {
+  background: var(--color-canvas);
+  color: var(--color-ink);
+  font-size: 14px;
+}
+
+.tabular { font-variant-numeric: tabular-nums; }
+
+.leaflet-container { font: inherit; background: #dfe3e6; }
+
+.scroll-thin { scrollbar-width: thin; scrollbar-color: #c3c9cf transparent; }
+
+@keyframes live-blink { 50% { opacity: .25; } }
+.live-dot { animation: live-blink 2s ease-in-out infinite; }
+
+@keyframes crit-ring {
+  0% { stroke-opacity: .9; stroke-width: 2; }
+  100% { stroke-opacity: 0; stroke-width: 14; }
+}
+.crit-pulse { animation: crit-ring 1.8s ease-out infinite; }
+
+@media (prefers-reduced-motion: reduce) {
+  .live-dot, .crit-pulse { animation: none; }
+}

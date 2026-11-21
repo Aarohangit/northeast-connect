@@ -1,0 +1,54 @@
+@import "tailwindcss";
+
+@theme {
+  --color-ink: #15191f;
+  --color-ink-soft: #3b4350;
+  --color-paper: #f5f3ee;
+  --color-card: #ffffff;
+  --color-line: #dedad1;
+  --color-sos: #c8102e;
+  --color-sos-dark: #9e0c24;
+  --color-warn: #a35c00;
+  --color-warn-bg: #fdf3e2;
+  --color-ok: #1d6b3a;
+  --color-ok-bg: #e7f4ea;
+  --color-info: #1f5f99;
+  --color-info-bg: #e8f1fa;
+
+  --font-sans: system-ui, "Segoe UI", "Noto Sans", "Noto Sans Bengali", "Noto Sans Devanagari",
+    "Nirmala UI", Roboto, sans-serif;
+}
+
+html {
+  background: var(--color-paper);
+  color: var(--color-ink);
+  -webkit-tap-highlight-color: transparent;
+}
+
+body {
+  min-height: 100dvh;
+}
+
+/* Assamese and Hindi glyphs need a little more room to stay legible on small screens. */
+:lang(as) body,
+:lang(hi) body {
+  line-height: 1.6;
+}
+
+.sos-pulse {
+  box-shadow: 0 0 0 0 rgb(200 16 46 / 0.45);
+  animation: sos-pulse 2.2s ease-out infinite;
+}
+
+@keyframes sos-pulse {
+  70% { box-shadow: 0 0 0 22px rgb(200 16 46 / 0); }
+  100% { box-shadow: 0 0 0 0 rgb(200 16 46 / 0); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .sos-pulse { animation: none; }
+}
+
+.leaflet-container {
+  font: inherit;
+}

@@ -1,0 +1,27 @@
+server:
+  port: 8082
+
+spring:
+  application:
+    name: rescue-service
+  datasource:
+    url: jdbc:mysql://${DB_HOST:localhost}:${DB_PORT:3306}/rescue_db?serverTimezone=UTC
+    username: ${DB_USER:flood}
+    password: ${DB_PASSWORD:floodpass}
+  jpa:
+    hibernate:
+      ddl-auto: update
+    open-in-view: false
+
+services:
+  sos:
+    url: ${SOS_SERVICE_URL:http://localhost:8081}
+
+rescue:
+  seed-demo-teams: ${SEED_DEMO_TEAMS:true}
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info
